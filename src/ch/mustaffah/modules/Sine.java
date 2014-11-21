@@ -8,7 +8,7 @@ import javax.sound.sampled.SourceDataLine;
 public class Sine extends Thread implements Runnable {
 
 	private boolean ON = false;
-	private int SAMPLE_RATE = 16 * 1024;
+	private int SAMPLE_RATE = 16;
 	private int freq = 500;
 
 	public int getFreq() {
@@ -27,15 +27,13 @@ public class Sine extends Thread implements Runnable {
 	private void togglePlay() {
 		final AudioFormat af = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
 		try (SourceDataLine line = AudioSystem.getSourceDataLine(af)) {
-			if (ON) {
-				line.stop();
-			} else {
+			ON = !ON;
+			while (ON) {
 				line.open(af, SAMPLE_RATE);
 				line.start();
 				byte[] arr = getData();
 				line.write(arr, 0, arr.length);
 				line.drain();
-				ON=true;
 			}
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
@@ -43,7 +41,7 @@ public class Sine extends Thread implements Runnable {
 	}
 
 	private byte[] getData() {
-		final int LENGTH = SAMPLE_RATE * 100;
+		final int LENGTH = 1024;
 		final byte[] arr = new byte[LENGTH];
 		for (int i = 0; i < arr.length; i++) {
 			double angle = (2.0 * Math.PI * i) / (SAMPLE_RATE / getFreq());
