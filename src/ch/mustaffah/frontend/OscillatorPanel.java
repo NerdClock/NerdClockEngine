@@ -36,7 +36,8 @@ public class OscillatorPanel extends JFrame {
 			startButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					sine.oscillatorStart();
+					sine = new Sine(16 * 1024, 500);
+					sine.start();
 				}
 			});
 			;
@@ -50,7 +51,7 @@ public class OscillatorPanel extends JFrame {
 			updateButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-						sine.setFreq(898);
+						sine.setFreq(1000);
 				}
 			});
 			;
